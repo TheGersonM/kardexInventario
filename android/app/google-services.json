@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "630344216526",
+    "project_id": "kardex-56c0f",
+    "storage_bucket": "kardex-56c0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630344216526:android:c3c77f7cbc6554e891859f",
+        "android_client_info": {
+          "package_name": "unah.edu.hn.kardexinventario"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRG8pOtjaG6L7kV6WV1hBk9uYBUxZLOoQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
