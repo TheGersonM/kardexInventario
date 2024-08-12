@@ -11,8 +11,6 @@ class Home_Page extends StatefulWidget {
 
 class _HomePageState extends State<Home_Page> {
 
-
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +21,5 @@ class _HomePageState extends State<Home_Page> {
       Text('hola'),
       ),
     );
-      
   }
 }

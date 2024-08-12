@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const OutputsPage());
-
 class OutputsPage extends StatefulWidget {
   const OutputsPage({super.key});
 

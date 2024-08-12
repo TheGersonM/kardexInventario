@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const ShoppingPage());
-
 class ShoppingPage extends StatefulWidget {
   const ShoppingPage({super.key});
 

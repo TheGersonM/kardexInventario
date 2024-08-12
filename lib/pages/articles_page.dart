@@ -1,17 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-void main() => runApp(const ArticlesPage());
 
-class ArticlesPage extends StatefulWidget {
-  const ArticlesPage({super.key});
+class ArticlesPage extends StatelessWidget {
+   ArticlesPage({super.key});
 
-  @override
-  State<ArticlesPage> createState() => _ArticlesPageState();
-}
 
-class _ArticlesPageState extends State<ArticlesPage> {
+  final TextEditingController nombreController = TextEditingController();
+
+  final TextEditingController costoController = TextEditingController();
+
+  final TextEditingController precioController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,55 +24,60 @@ class _ArticlesPageState extends State<ArticlesPage> {
         
         children: [
 
-        const Padding(
-          padding:  EdgeInsets.all(16.0),
+         Padding(
+          padding:  const EdgeInsets.all(16.0),
           child:  TextField(
-            
-            decoration: InputDecoration(
+            controller: nombreController,
+            decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Nombre del articulo',
               suffixIcon: Icon(Icons.description),
             ),
           ),
         ),
-        const Padding(
-          padding:  EdgeInsets.all(16.0),
+        Padding(
+          padding:  const EdgeInsets.all(16.0),
           child:  TextField(
-            
-            decoration: InputDecoration(
+            controller: costoController,
+            decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Precio',
+              labelText: 'Costo',
               suffixIcon: Icon(Icons.attach_money),
             ),
           ),
         ),
-        const Padding(
-          padding:  EdgeInsets.all(16.0),
+        Padding(
+          padding:  const EdgeInsets.all(16.0),
           child:  TextField(
-            
-            decoration: InputDecoration(
+            controller: precioController,
+            decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Grupo articulo',
-              suffixIcon: Icon(Icons.group_work),
+              labelText: 'Precio de venta',
+              suffixIcon: Icon(Icons.attach_money_rounded),
             ),
           ),
         ),
-        const Padding(
-          padding:  EdgeInsets.all(16.0),
-          child:  TextField(
-            
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Existencia',
-              suffixIcon: Icon(Icons.summarize),
-            ),
-          ),
-        ),
+
         ElevatedButton(
-          onPressed: () {
-            // Respond to button press
-          },
-          child: const Text('Crear'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+          ),
+           onPressed: () async {
+                final articulo = {
+                  'Descripcion': nombreController.text,
+                  'costo': int.parse(costoController.text),
+                  'percio': int.parse(precioController.text),
+                  'Existencia': 0,
+                };
+        
+                //guardar en firebase
+                final articulosRef =
+                    FirebaseFirestore.instance.collection('Articulos');
+        
+                articulosRef.add(articulo);
+                Navigator.pop(context);
+              },
+          child: const Text('Crear articulo', style: TextStyle(color: Colors.white)),
         ),
       ],)
     );

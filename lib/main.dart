@@ -29,12 +29,12 @@ class MyApp extends StatelessWidget {
       initialRoute: 'start', //esta es la ruta principal
       routes: {
         'home': (context) =>  Home_Page(),
-        'start': (context) =>  const StartPage(),
+        'start': (context) =>   StartPage(),
         'inputs': (context) =>  const InputsPage(),
         'outputs': (context) =>  const OutputsPage(),
         'sales': (context) =>  const SalesPage(),
         'shopping': (context) =>  const ShoppingPage(),
-        'articles': (context) =>  const ArticlesPage(),
+        'articles': (context) =>   ArticlesPage(),
       },
       onGenerateRoute: (RouteSettings settings) {
         

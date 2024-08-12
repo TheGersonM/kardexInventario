@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const SalesPage());
-
 class SalesPage extends StatefulWidget {
   const SalesPage({super.key});
 

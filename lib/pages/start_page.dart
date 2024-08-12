@@ -1,25 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:kardex/models/articles.dart';
-
-void main() => runApp(const StartPage());
 
 class StartPage extends StatefulWidget {
-  const StartPage({super.key});
-
+   StartPage({
+    super.key,
+  });
+  bool visible = false;
   @override
-  State<StartPage> createState() => _StartPageState();
+  State<StartPage> createState() => _StartPage();
 }
-
-class _StartPageState extends State<StartPage> {
-  List<Articles> articulos = <Articles>[];
+class _StartPage extends State<StartPage> {
   late ArticlesDataSource dataArticulos;
 
   @override
   void initState() {
     super.initState();
-    articulos = getArticlesData();
-    dataArticulos = ArticlesDataSource(ArticlesData: articulos);
+    dataArticulos = ArticlesDataSource(ArticlesData: []);
   }
 
   @override
@@ -30,48 +27,74 @@ class _StartPageState extends State<StartPage> {
         backgroundColor: Colors.blue,
       ),
       backgroundColor: Colors.white,
-      body: SfDataGrid(
-        allowSorting: true,
-        allowSwiping: true,
-        onCellDoubleTap: (details) => 
-          Navigator.pushNamed(context, 'articles'),
-        source: dataArticulos,
-        columnWidthMode: ColumnWidthMode.fill,
-        columns: <GridColumn>[
-          GridColumn(
-            columnName: 'id',
-            label: Container(
-              padding: const EdgeInsets.all(16.0),
-              alignment: Alignment.center,
-              child: const Text('ID'),
-            ),
-          ),
-          GridColumn(
-            columnName: 'name',
-            label: Container(
-              padding: const EdgeInsets.all(8.0),
-              alignment: Alignment.center,
-              child: const Text('Name'),
-            ),
-          ),
-          GridColumn(
-            columnName: 'designation',
-            label: Container(
-              padding: const EdgeInsets.all(8.0),
-              alignment: Alignment.center,
-              child: const Text('Designation', overflow: TextOverflow.ellipsis),
-            ),
-          ),
-          GridColumn(
-            columnName: 'salary',
-            label: Container(
-              padding: const EdgeInsets.all(8.0),
-              alignment: Alignment.center,
-              child: const Text('Salary'),
-            ),
-          ),
-        ],
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('Articulos').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('Error al cargar los datos'),
+            );
+          }
+
+          final data = snapshot.requireData;
+
+          final articulos = data.docs.map((doc) => Articles(
+            doc['ArticuloId'],
+            doc['Descripcion'],
+            doc['precio'],
+            doc['Existencia'],
+          )).toList();
+
+          dataArticulos.updateData(articulos);
+
+          return SfDataGrid(
+            allowSwiping: true,
+            onCellDoubleTap: (details) => Navigator.pushNamed(context, 'articles'),
+            source: dataArticulos,
+            columnWidthMode: ColumnWidthMode.fill,
+            columns: <GridColumn>[
+              GridColumn(
+                columnName: 'ID',
+                label: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  alignment: Alignment.center,
+                  child: const Text('ID'),
+                ),
+              ),
+              GridColumn(
+                columnName: 'Descripcion',
+                label: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  alignment: Alignment.center,
+                  child: const Text('Descripcion'),
+                ),
+              ),
+              GridColumn(
+                columnName: 'Precio',
+                label: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  alignment: Alignment.center,
+                  child: const Text('Precio'),
+                ),
+              ),
+              GridColumn(
+                columnName: 'Existencia',
+                label: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  alignment: Alignment.center,
+                  child: const Text('Existencia'),
+                ),
+              ),
+            ],
+          );
+        },
       ),
+      
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(255, 107, 174, 229),
         onPressed: () {
@@ -129,51 +152,44 @@ class _StartPageState extends State<StartPage> {
   }
 }
 
-List<Articles> getArticlesData() {
-  return [
-    Articles(10001, 'James', 'Project Lead', 20000),
-    Articles(10002, 'Kathryn', 'Manager', 30000),
-    Articles(10003, 'Lara', 'Developer', 15000),
-    Articles(10004, 'Michael', 'Designer', 15000),
-    Articles(10005, 'Martin', 'Developer', 15000),
-    Articles(10006, 'Newberry', 'Developer', 15000),
-    Articles(10007, 'Balnc', 'Developer', 15000),
-    Articles(10008, 'Perry', 'Developer', 15000),
-    Articles(10009, 'Gable', 'Developer', 15000),
-    Articles(10010, 'Grimes', 'Developer', 15000)
-  ];
-}
-
 class ArticlesDataSource extends DataGridSource {
-
-  List<DataGridRow> _datosArticulos = [];
+  List<DataGridRow> dataGridRows = [];
 
   ArticlesDataSource({required List<Articles> ArticlesData}) {
-
-    _datosArticulos = 
-              ArticlesData.map<DataGridRow>((dataGridRow) =>
-              
-               DataGridRow(cells: [
-              DataGridCell<int>(columnName: 'id', value: dataGridRow.id),
-              DataGridCell<String>(columnName: 'name', value: dataGridRow.name),
-              DataGridCell<String>(columnName: 'designation', value: dataGridRow.designation),
-              DataGridCell<int>(columnName: 'salary', value: dataGridRow.salary),
-
-            ]))
-        .toList();
+    updateData(ArticlesData);
   }
 
-  
+  void updateData(List<Articles> ArticlesData) {
+    dataGridRows = ArticlesData.map<DataGridRow>((article) => DataGridRow(cells: [
+      DataGridCell<int>(columnName: 'id', value: article.id),
+      DataGridCell<String>(columnName: 'descripcion', value: article.descripcion),
+      DataGridCell<int>(columnName: 'precio', value: article.precio),
+      DataGridCell<int>(columnName: 'existencia', value: article.existencia),
+      // Añade más celdas según sea necesario
+    ])).toList();
+    notifyListeners();
+  }
 
-  List<DataGridRow> get rows => _datosArticulos;
+  @override
+  List<DataGridRow> get rows => dataGridRows;
 
+  @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-    return DataGridRowAdapter(cells: row.getCells().map<Widget>((dataGridCell) {
+    return DataGridRowAdapter(cells: row.getCells().map<Widget>((cell) {
       return Container(
         alignment: Alignment.center,
-        padding: const EdgeInsets.all(5.0),
-        child: Text(dataGridCell.value.toString()),
+        padding: const EdgeInsets.all(8.0),
+        child: Text(cell.value.toString()),
       );
     }).toList());
   }
+}
+
+class Articles {
+  Articles(this.id, this.descripcion, this.precio, this.existencia);
+
+  final int id;
+  final String descripcion;
+  final int precio;
+  final int existencia;
 }

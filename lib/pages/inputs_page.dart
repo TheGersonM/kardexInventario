@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const InputsPage());
 
 class InputsPage extends StatelessWidget {
   const InputsPage({super.key});
