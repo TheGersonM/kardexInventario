@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kardex/models/articles.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class StartPage extends StatefulWidget {
@@ -11,12 +12,12 @@ class StartPage extends StatefulWidget {
   State<StartPage> createState() => _StartPage();
 }
 class _StartPage extends State<StartPage> {
-  late ArticlesDataSource dataArticulos;
+  late ArticulosFuente dataArticulos;
 
   @override
   void initState() {
     super.initState();
-    dataArticulos = ArticlesDataSource(ArticlesData: []);
+    dataArticulos = ArticulosFuente(dataArticulos: []);
   }
 
   @override
@@ -49,7 +50,7 @@ class _StartPage extends State<StartPage> {
             doc['precio'],
             doc['Existencia'],
           )).toList();
-
+          articulos.sort((a, b) => a.id.compareTo(b.id));
           dataArticulos.updateData(articulos);
 
           return SfDataGrid(
@@ -150,46 +151,4 @@ class _StartPage extends State<StartPage> {
       ),
     );
   }
-}
-
-class ArticlesDataSource extends DataGridSource {
-  List<DataGridRow> dataGridRows = [];
-
-  ArticlesDataSource({required List<Articles> ArticlesData}) {
-    updateData(ArticlesData);
-  }
-
-  void updateData(List<Articles> ArticlesData) {
-    dataGridRows = ArticlesData.map<DataGridRow>((article) => DataGridRow(cells: [
-      DataGridCell<int>(columnName: 'id', value: article.id),
-      DataGridCell<String>(columnName: 'descripcion', value: article.descripcion),
-      DataGridCell<int>(columnName: 'precio', value: article.precio),
-      DataGridCell<int>(columnName: 'existencia', value: article.existencia),
-      // Añade más celdas según sea necesario
-    ])).toList();
-    notifyListeners();
-  }
-
-  @override
-  List<DataGridRow> get rows => dataGridRows;
-
-  @override
-  DataGridRowAdapter buildRow(DataGridRow row) {
-    return DataGridRowAdapter(cells: row.getCells().map<Widget>((cell) {
-      return Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(8.0),
-        child: Text(cell.value.toString()),
-      );
-    }).toList());
-  }
-}
-
-class Articles {
-  Articles(this.id, this.descripcion, this.precio, this.existencia);
-
-  final int id;
-  final String descripcion;
-  final int precio;
-  final int existencia;
 }
