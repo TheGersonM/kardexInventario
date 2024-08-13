@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kardex/models/articles.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -24,6 +25,15 @@ class _StartPage extends State<StartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout_sharp, color: Colors.white, size: 40),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, 'home');
+            },
+          ),
+        ],
         title: const Text('Kardex de inventario', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue,
       ),

@@ -12,7 +12,12 @@
           "package_name": "unah.edu.hn.kardexinventario"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "630344216526-stnrsnree5kc9iheub203misch4o7o56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBRG8pOtjaG6L7kV6WV1hBk9uYBUxZLOoQ"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630344216526-stnrsnree5kc9iheub203misch4o7o56.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "630344216526-7g2ivqlpv3uch9iq77jjiq2378c4i0sh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "unah.edu.hn.kardexinventario"
+              }
+            }
+          ]
         }
       }
     }
