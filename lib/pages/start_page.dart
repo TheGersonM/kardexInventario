@@ -5,10 +5,9 @@ import 'package:kardex/models/articles.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class StartPage extends StatefulWidget {
-   StartPage({
+   const StartPage({
     super.key,
   });
-  bool visible = false;
   @override
   State<StartPage> createState() => _StartPage();
 }
@@ -48,7 +47,7 @@ class _StartPage extends State<StartPage> {
               padding: EdgeInsets.zero,
               children: <Widget>[
 
-                  Container(
+                  SizedBox(
                     height: 280,
                     child:  UserAccountsDrawerHeader(
                     

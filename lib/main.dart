@@ -8,6 +8,7 @@ import 'pages/outputs_page.dart';
 import 'pages/sales_page.dart';
 import 'pages/shopping_page.dart';
 import 'pages/articles_page.dart';
+import 'pages/register_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,16 +26,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Login',
-      // home: HomePage(),
-      initialRoute: 'home', //esta es la ruta principal
+      initialRoute: 'home', 
       routes: {
-        'home': (context) =>  Home_Page(),
-        'start': (context) =>   StartPage(),
+        'home': (context) =>  const HomePage(),
+        'start': (context) =>   const StartPage(),
         'inputs': (context) =>  const InputsPage(),
         'outputs': (context) =>  const OutputsPage(),
         'sales': (context) =>  const SalesPage(),
         'shopping': (context) =>  const ShoppingPage(),
         'articles': (context) =>   ArticlesPage(),
+        'register': (context) => const RegisterPage(),
       },
       onGenerateRoute: (RouteSettings settings) {
         

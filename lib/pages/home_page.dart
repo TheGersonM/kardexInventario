@@ -22,24 +22,21 @@ Future<UserCredential> signInWithGoogle() async {
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }
 
-class Home_Page extends StatefulWidget {
-   Home_Page({
+class HomePage extends StatefulWidget {
+   const HomePage({
     super.key,
   });
-  bool visible = false;
   @override
-  State<Home_Page> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<Home_Page> {
+class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Inicio de sesión', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.blue,
-      ), body:    StreamBuilder(
+      backgroundColor: Colors.lightBlue,
+       body:    StreamBuilder(
         stream: null,
         builder: (context, snapshot) {
           return Center(child: 
@@ -51,29 +48,82 @@ class _HomePageState extends State<Home_Page> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const CircleAvatar(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Colors.white,
                       radius: 60,
-                      child: Icon(Icons.person, size: 60, color: Colors.white),
+                      child: Icon(Icons.person, size: 60, color: Colors.blue),
                     ),
                     const SizedBox(height: 70),
                     TextFormField(
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
                       decoration: const InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        disabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
                         labelText: 'Correo',
-                        icon: Icon(Icons.email),
+                        labelStyle: TextStyle(color: Colors.white, fontSize: 20),
+                        icon: Icon(Icons.email, color: Colors.white),
                       ),
                     ),
                     TextFormField(
+                      obscureText: true,
+                      style: const TextStyle(color: Colors.white, fontSize: 20),
                       decoration: const InputDecoration(
+                        
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        disabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
                         labelText: 'Contraseña',
-                        icon: Icon(Icons.lock),
+                        labelStyle: TextStyle(color: Colors.white, fontSize: 20),
+                        icon: Icon(Icons.lock, color: Colors.white),
                       ),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        minimumSize: const Size(200, 50),
+                      ),
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, 'start');
                       },
                       child: const Text('Iniciar sesión', style: TextStyle(fontSize: 20, color: Colors.blue)),
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        
+                        backgroundColor:const  Color.fromARGB(255, 43, 194, 192),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          
+                        ),
+                        minimumSize: const Size(150, 50),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'register');
+                      },
+                      child: const Text('Registrarme', style: TextStyle(fontSize: 20, color: Colors.white)),
                     ),
                 
                 
@@ -82,7 +132,7 @@ class _HomePageState extends State<Home_Page> {
                     Padding(
                       padding: const EdgeInsets.all(28.0),
                       child: GoogleAuthButton(
-                        darkMode: true,
+                        darkMode: false,
                         onPressed: () async {
                           await signInWithGoogle();
                           if (FirebaseAuth.instance.currentUser != null) {
