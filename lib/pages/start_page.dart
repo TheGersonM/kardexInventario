@@ -23,6 +23,7 @@ class _StartPage extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -33,9 +34,77 @@ class _StartPage extends State<StartPage> {
               Navigator.pushReplacementNamed(context, 'home');
             },
           ),
+          
         ],
         title: const Text('Kardex de inventario', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue,
+      ),
+      drawer: Drawer(
+        
+        child: StreamBuilder(
+          stream: null,
+          builder: (context, snapshot) {
+            return ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+
+                  Container(
+                    height: 280,
+                    child:  UserAccountsDrawerHeader(
+                    
+                    accountName:  Text(user?.displayName ?? 'Usuario', style: const TextStyle(color: Colors.white, fontSize: 24)),
+                    accountEmail: Text(user?.email ?? 'Correo electronico', style: const TextStyle(color: Colors.white, fontSize: 18)),
+                    currentAccountPicture:  CircleAvatar(
+                      radius: 40,
+                      backgroundImage: user!.photoURL  != null ? NetworkImage(user.photoURL!) : null,
+                    ),
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 18, 118, 131),
+                      
+                    ),
+                    
+                                    ),
+                  ),
+                ListTile(
+                  title: const Text('Inicio'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, 'start');
+                  },
+                ),
+                ListTile(
+                  title: const Text('Ventas'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, 'sales');
+                  },
+                ),
+                ListTile(
+                  title: const Text('Compras'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, 'shopping');
+                  },
+                ),
+                ListTile(
+                  title: const Text('Salidas de inventario'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, 'outputs');
+                  },
+                ),
+                ListTile(
+                  title: const Text('Entradas de inventario'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, 'inputs');
+                  },
+                ),
+                ListTile(
+                  title: const Text('Artículos'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, 'articles');
+                  },
+                ),
+              ],
+            );
+          }
+        ),
       ),
       backgroundColor: Colors.white,
       body: StreamBuilder(
@@ -67,6 +136,7 @@ class _StartPage extends State<StartPage> {
             allowSwiping: true,
             onCellDoubleTap: (details) => Navigator.pushNamed(context, 'articles'),
             source: dataArticulos,
+            
             columnWidthMode: ColumnWidthMode.fill,
             columns: <GridColumn>[
               GridColumn(
