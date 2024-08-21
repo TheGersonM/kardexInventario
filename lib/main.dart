@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kardex/pages/kardex_view.dart';
 import 'firebase_options.dart';
 import 'pages/home_page.dart';
 import 'pages/start_page.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         'shopping': (context) =>  const ShoppingPage(),
         'articles': (context) =>   ArticlesPage(),
         'register': (context) => const RegisterPage(),
+        'kardex': (context) => KardexView(),
       },
       onGenerateRoute: (RouteSettings settings) {
         
